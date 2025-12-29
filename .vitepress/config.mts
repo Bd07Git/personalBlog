@@ -9,7 +9,14 @@ export default defineConfig({
     // 1. 修复图标路径（使用带 base 的绝对路径最稳妥）
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/my-blog/favicon.svg' }],
     // 2. 显式声明视口，确保响应式
-    ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }]
+    ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
+    [
+      'script',
+      { 
+        async: 'async', 
+        src: '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js' 
+      }
+    ]
   ],
   themeConfig: {
     // 3. 修复 Logo 路径
