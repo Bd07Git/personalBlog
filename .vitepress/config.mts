@@ -3,9 +3,9 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   base: '/my-blog/',
-  title: "My Awesome Project",
-  description: "A VitePress Site",
-  head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
+  title: "day-day-up",
+  description: "hl go go go",
+  head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [

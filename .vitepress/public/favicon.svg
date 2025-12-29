@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <!-- 深邃星空背景渐变 -->
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#1a2a6c" />
+      <stop offset="70%" style="stop-color:#0a0e17" />
+      <stop offset="100%" style="stop-color:#05070a" />
+    </radialGradient>
+    <!-- 核心星球渐变 -->
+    <linearGradient id="planetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00f2fe" />
+      <stop offset="100%" style="stop-color:#4facfe" />
+    </linearGradient>
+    <!-- 发光滤镜 -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- 1. 背景圆盘 -->
+  <circle cx="256" cy="256" r="250" fill="url(#bgGrad)" stroke="#2c3e50" stroke-width="2"/>
+  
+  <!-- 2. 装饰星轨 -->
+  <circle cx="256" cy="256" r="230" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="10,5"/>
+  <circle cx="256" cy="256" r="210" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="2"/>
+
+  <!-- 3. 底部山脉剪影 -->
+  <path d="M40,400 Q150,320 256,380 T472,400 L472,512 L40,512 Z" fill="#0f172a" opacity="0.8" />
+  <path d="M10,420 Q120,350 256,410 T502,420 L502,512 L10,512 Z" fill="#1e293b" />
+
+  <!-- 4. 中心发光星球 -->
+  <circle cx="256" cy="230" r="85" fill="url(#planetGrad)" filter="url(#glow)" />
+  
+  <!-- 5. 划破星球的亮线 -->
+  <line x1="180" y1="310" x2="330" y2="150" stroke="white" stroke-width="3" filter="url(#glow)" opacity="0.8" />
+  
+  <!-- 6. 核心字母 H -->
+  <text x="256" y="245" text-anchor="middle" fill="white" font-family="Georgia, serif" font-size="90" font-weight="bold" filter="url(#glow)">H</text>
+
+  <!-- 7. 顶部弧形文字 (修复版：加长了路径并调整了间距) -->
+  <path id="topCurve" d="M60,250 A200,200 0 0,1 452,250" fill="none" />
+  <text fill="rgba(255,255,255,0.7)" font-family="monospace" font-size="32" font-weight="bold" style="letter-spacing: 12px;">
+    <textPath href="#topCurve" startOffset="50%" text-anchor="middle">HL · BLOG</textPath>
+  </text>
+
+  <!-- 8. 底部艺术签名 -->
+  <text x="256" y="470" text-anchor="middle" fill="#4facfe" font-family="Brush Script MT, cursive" font-size="45" filter="url(#glow)">hl · space</text>
+
+  <!-- 9. 装饰小星星 -->
+  <circle cx="120" cy="150" r="2" fill="white" opacity="0.8" />
+  <circle cx="400" cy="120" r="1.5" fill="white" opacity="0.6" />
+  <circle cx="350" cy="350" r="2" fill="#00f2fe" />
+</svg>
