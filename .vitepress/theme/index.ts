@@ -7,6 +7,7 @@ import MAiNav from './components/MAiNav.vue'
 import BackToTop from './components/BackToTop.vue'
 import ClickFireworks from './components/ClickFireworks.vue'
 import PageInfo from './components/PageInfo.vue'
+import VueDirectory from './components/VueDirectory.vue'
 
 export default {
   extends: DefaultTheme,
@@ -26,5 +27,6 @@ export default {
     app.component('BackToTop', BackToTop)
     app.component('ClickFireworks', ClickFireworks)
     app.component('PageInfo', PageInfo)
+    app.component('VueDirectory', VueDirectory)
   }
 }

@@ -31,7 +31,7 @@
   --vp-c-brand-darker: #005e5e;
 }
 
-/* 4. 确保按钮等组件使用这些变量 */
+/* 4. 确保按钮等组件使用 these 变量 */
 .vp-button.brand {
   background-color: var(--vp-c-brand-1);
   transition: background-color 0.5s linear;
@@ -79,4 +79,38 @@
   transform: translate(-50%, -50%);
   z-index: -1;
   transition: background-image 0.5s linear;
+}
+
+/* macOS 风格代码块 */
+div[class*='language-'] {
+  position: relative;
+  margin-top: 24px !important;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+div[class*='language-']::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ff5f56; /* 红 */
+  box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f; /* 黄、绿 */
+  z-index: 3;
+}
+
+/* 调整代码块内部间距，为圆点留出顶部空间 */
+div[class*='language-'] pre {
+  padding-top: 36px !important;
+}
+
+/* 调整语言标识（如 js）的位置，避免与圆点重叠 */
+div[class*='language-'] > span.lang {
+  top: 10px !important;
+  right: 16px !important;
+  opacity: 0.6;
+  font-size: 12px;
 }
