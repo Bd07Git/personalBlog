@@ -20,9 +20,9 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: 'React', link: '/react/' },
       { text: 'Vue', link: '/vue/index' },
-      { text: 'Next.js', link: '/nextjs/' },
-      { text: 'Node.js', link: '/nodejs/' },
-      { text: 'Python', link: '/python/' },
+      { text: '项目', link: '/project/' },
+      { text: 'vite', link: '/vite/' },
+      { text: '面j', link: '/interview/' },
       { 
         text: '更多', 
         items: [
@@ -32,7 +32,7 @@ export default defineConfig({
       }
     ],
 
-    // 2. 侧边栏配置 (以 Vue 为例)
+    // 2. 侧边栏配置
     sidebar: {
       '/vue/': [
         {
@@ -51,10 +51,33 @@ export default defineConfig({
           ]
         }
       ],
+      '/interview/': [
+        {
+          text: 'JavaScript 基础',
+          items: [
+            { text: '原型和原型链', link: '/interview/prototype' },
+            { text: '闭包', link: '/interview/closure' },
+            { text: 'this 指向', link: '/interview/this' },
+            { text: '事件循环', link: '/interview/eventLoop' },
+            { text: 'Promise', link: '/interview/promise' },
+            { text: 'async/await', link: '/interview/asyncAwait' },
+            { text: 'Generator', link: '/interview/generator' },
+          ]
+        },
+        {
+          text: '基础与 ES6',
+          items: [
+            { text: 'Map 和 Set', link: '/interview/mapSet' },
+            { text: '数组和字符串', link: '/interview/arrayString' },
+            { text: 'ES6+ 新特性', link: '/interview/es6' },
+          ]
+        }
+      ],
       '/ecosystem/': [
         {
           text: '前端生态',
           items: [
+            { text: '生态导航', link: '/ecosystem/' },
             { text: 'CSR vs SSR', link: '/ecosystem/csr-vs-ssr' },
           ]
         }

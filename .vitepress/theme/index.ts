@@ -5,6 +5,7 @@ import { useRoute } from 'vitepress'
 import mediumZoom from 'medium-zoom'
 import Busuanzi from './components/Busuanzi.vue'
 import MTools from './components/MTools.vue'
+import MNavLinks from './components/MNavLinks.vue'
 import MAiNav from './components/MAiNav.vue'
 import BackToTop from './components/BackToTop.vue'
 import ClickFireworks from './components/ClickFireworks.vue'
@@ -25,6 +26,7 @@ export default {
     // 注册全局组件
     app.component('Busuanzi', Busuanzi)
     app.component('MTools', MTools)
+    app.component('MNavLinks', MNavLinks)
     app.component('MAiNav', MAiNav)
     app.component('BackToTop', BackToTop)
     app.component('ClickFireworks', ClickFireworks)
