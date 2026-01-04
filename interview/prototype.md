@@ -39,23 +39,13 @@ console.log(Person.prototype.constructor === Person); // true
 
 这种链式结构就称为**原型链**。
 
-### 原型链结构图
-
-<div class="custom-box">
-  <span class="title">Prototype Chain</span>
-  <div class="content">
-    <pre style="background: transparent; padding: 0; margin: 0; color: inherit;">
+### 原型链流程
+```text
 p (实例) 
-  └── <b>__proto__</b> ──▶ Person.prototype
-                    └── <b>__proto__</b> ──▶ Object.prototype
-                                      └── <b>__proto__</b> ──▶ null
-
-Person (构造函数)
-  └── <b>prototype</b> ──▶ Person.prototype
-                    └── <b>constructor</b> ──▶ Person
-    </pre>
-  </div>
-</div>
+  --> p.__proto__ === Person.prototype
+    --> Person.prototype.__proto__ === Object.prototype
+      --> Object.prototype.__proto__ === null
+```
 
 ## 3. 核心 API
 

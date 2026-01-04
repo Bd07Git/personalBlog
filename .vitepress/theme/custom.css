@@ -115,6 +115,42 @@ div[class*='language-'] > span.lang {
   font-size: 12px;
 }
 
+/* 自定义精致卡片样式 (用于 SEO、原型链图等) */
+.custom-box {
+  margin: 24px 0;
+  padding: 24px;
+  border: 1.5px solid #be95ff; /* 紫色边框 */
+  border-radius: 12px;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(190, 149, 255, 0.1);
+}
+
+.custom-box .title {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #be95ff; /* 标题紫色 */
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.custom-box .content {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #4a4a68;
+}
+
+/* 定义框样式 (备用) */
+.definition-box {
+  margin: 24px 0;
+  padding: 16px 20px;
+  background-color: var(--vp-c-bg-soft);
+  border-left: 4px solid var(--vp-c-brand-1);
+  border-radius: 8px;
+}
+
 /* 自定义定义框样式 */
 .definition-box {
   margin: 24px 0;
