@@ -64,3 +64,30 @@ npm 使用语义化版本号，格式为 `X.Y.Z`（主版本号.次版本号.修
 - **查看已安装包**：`npm list --depth=0`。
 - **清理缓存**：`npm cache clean --force`。
 - **查看包信息**：`npm view <pkg> versions`。
+
+## 7. 常见问题
+**为什么可以直接npm start？而不用npm run start呢？**
+
+这是一个非常经典且有趣的 npm 细节。
+简单来说，这是因为 npm start 是 npm 的内置快捷命令（Shorthand）。
+1. 为什么可以省略 run？
+npm 为了提高开发效率，为几个最常用的脚本命令设置了“特权”，允许你直接调用而不需要加 run。这些命令包括：
+```
+npm start
+npm test
+npm stop
+npm restart
+```
+除了这几个特定的命令外，其他所有自定义脚本（比如 npm run dev、npm run build）都必须加上 run。
+
+2. npm start 的特殊默认行为
+即使你没有在 package.json 的 scripts 字段里定义 start，如果你运行 npm start，它也会尝试执行一个默认操作：
+如果项目根目录下存在 server.js 文件，npm 会默认执行 node server.js。
+
+3. 为什么 npm install 也不用 run？
+这里需要区分一下：
+install、publish、login 等是 npm 的原生指令（Commands），它们本身就是 npm 工具的一部分。
+start、test 则是 脚本命令（Scripts）。
+通常情况下，原生指令不需要 run，而脚本命令需要。start 和 test 只是因为太常用了，所以被 npm 破例提升到了和原生指令一样的调用待遇。
+总结
+你可以把 npm start 理解为 npm run start 的官方简写版。两者在功能上是完全等价的，但少打四个字母（run 加一个空格）确实能让开发体验更爽一点。

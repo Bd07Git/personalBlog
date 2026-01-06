@@ -186,3 +186,75 @@ Manifest 是连接“逻辑文件名”和“物理文件名”的桥梁。 它�
 ### 避坑指南
 - **安全风险**：千万不要把 `.map` 文件直接传到生产环境的公网服务器上，否则任何人都可以通过开发者工具直接看到你的**完整源码**。
 - **体积问题**：SourceMap 文件通常很大，甚至比代码本身还大，但它不会影响用户的首屏加载速度，因为它是**异步加载**且只有在**打开开发者工具**时才会触发下载。
+
+## 7. runtimeChunk: 'single'
+在 Webpack 配置中，optimization.runtimeChunk: 'single' 的主要作用是将 Webpack 的运行时代码（Runtime）提取到一个单独的 JS 文件中。
+为了理解为什么要这么做，我们需要拆解成三个问题：
+1. 什么是 Webpack 运行时（Runtime）？
+Webpack 打包后的代码不仅仅是你写的业务逻辑，还包含了一段“引导代码”。这段代码负责：
+在浏览器中模拟 require/import 的行为。
+管理模块的加载、执行和缓存。
+处理异步加载（Code Splitting）的逻辑。
+2. 默认情况下会发生什么？
+如果不配置 runtimeChunk，Webpack 会把这段运行时代码**打包进每一个入口文件（Entry Bundle）**中。
+在你的项目中，你有两个入口：index 和 print。
+index.bundle.js 会包含一份运行时代码。
+print.bundle.js 也会包含一份运行时代码。
+这会带来两个问题：
+代码冗余：同样的引导代码被下载了两次。
+缓存失效（最致命的问题）：
+运行时代码中包含一个“模块清单”（Manifest），记录了所有模块的哈希值。
+如果你修改了 print.js，它的哈希值会变。
+由于 index.bundle.js 里的运行时代码记录了 print.js 的哈希，导致即使你没改 index.js，index.bundle.js 的内容也会跟着变。
+结果：用户浏览器里原本缓存好的 index.bundle.js 失效了，必须重新下载。
+3. runtimeChunk: 'single' 做了什么？
+配置了这个选项后，Webpack 会创建一个名为 runtime.js（或者在你的配置中可能是 runtime.bundle.js）的文件，里面包含了所有入口共享的运行时代码。
+带来的好处：
+更好的长期缓存（Long-term Caching）：
+当你修改业务代码时，只有对应的业务包和这个极小的 runtime 包会变。
+其他没改动的业务包（Entry Bundles）的哈希值将保持不变，用户可以继续使用浏览器缓存。
+一致性：确保页面上多个入口共享同一个模块加载器实例，避免潜在的冲突。
+总结
+在多入口（Multi-entry）应用中，配置 runtimeChunk: 'single' 是性能优化的标准做法。它通过提取共享的运行时代码，最大化地利用了浏览器的缓存机制，减少了用户在应用更新时需要下载的数据量。
+
+## 8. webpack-dev-server
+在开发环境中，webpack-dev-server 是一个非常有用的工具。它可以：
+- 实时重新加载（Hot Module Replacement）：当修改了代码后，浏览器会自动刷新。
+- 提供了一个本地服务器：可以访问本地资源。
+- 提供了 SourceMap 支持：方便调试。
+
+可以通过如下配置设置：
+```bash
+npm install --save-dev webpack-dev-server
+};
+```
+然后在webpack.config.js中配置如下：
+```json
+module.exports = {
+  devServer: {
+    static: './dist'
+  },
+  optimization: {
+    runtimeChunk: 'single'
+  }
+};
+```
+接着配置脚本
+```json
+"scripts": {
+  "start": "webpack serve --open"
+}
+```
+最后执行
+```
+npm start
+```
+
+为什么可以直接npm start？而不用npm run start呢？
+具体原因可以参考：[npm 常见问题](../npm/index.md#7-常见问题)
+因为package.json中配置了"start":"webpack serve --open"。
+
+![alt text](image-9.png)
+webpack-dev-server不会输出任何文件到dist目录中,而是将bundle输出到**内存中**，然后将它们作为可访问的资源**部署**在本地服务器，可以看到端口号为8082(因为本地8080和8081被占用了)上。因此即使我们把dist目录中之前生成的bundle删除,也不会影响服务器的访问。
+
+这个时候我们在本地的任何改动都会实时反映到服务器上，不用再手动刷新页面。
