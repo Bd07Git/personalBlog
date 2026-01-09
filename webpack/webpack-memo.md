@@ -188,6 +188,7 @@ Manifest 是连接“逻辑文件名”和“物理文件名”的桥梁。 它�
 - **体积问题**：SourceMap 文件通常很大，甚至比代码本身还大，但它不会影响用户的首屏加载速度，因为它是**异步加载**且只有在**打开开发者工具**时才会触发下载。
 
 ## 7. runtimeChunk: 'single'
+如果想要在一个 HTML 页面上使用多个入口起点，还需设置 optimization.runtimeChunk: 'single'
 在 Webpack 配置中，optimization.runtimeChunk: 'single' 的主要作用是将 Webpack 的运行时代码（Runtime）提取到一个单独的 JS 文件中。
 为了理解为什么要这么做，我们需要拆解成三个问题：
 1. 什么是 Webpack 运行时（Runtime）？
@@ -258,3 +259,66 @@ npm start
 webpack-dev-server不会输出任何文件到dist目录中,而是将bundle输出到**内存中**，然后将它们作为可访问的资源**部署**在本地服务器，可以看到端口号为8082(因为本地8080和8081被占用了)上。因此即使我们把dist目录中之前生成的bundle删除,也不会影响服务器的访问。
 
 这个时候我们在本地的任何改动都会实时反映到服务器上，不用再手动刷新页面。
+
+## 8. Module 和 Chunk 和 Bundle 的区别
+https://www.cnblogs.com/goloving/p/9206219.html
+在 Webpack 的世界里，模块（Module）、代码块（Chunk）和资源包（Bundle）是三个处于不同阶段的概念。
+module，chunk 和 bundle 其实就是同一份逻辑代码在不同转换场景下的取了三个名字：我们直接写出来的是 module，webpack 处理时是 chunk，最后生成浏览器可以直接运行的 bundle
+
+### 核心区别
+- **Module (模块)**：你编写的源代码文件（如 `.js`, `.css`, `.vue`, `.png`）。对于 Webpack 来说，万物皆模块。
+- **Chunk (代码块)**：Webpack 在打包过程中，（‌代表Webpack在处理模块依赖时形成的代码块）根据入口（Entry）和各种配置（如动态导入、SplitChunks）将模块组合而成的**中间产物**。
+- **Bundle (资源包)**：打包完成后，最终输出到 `dist` 目录中、供浏览器加载的**最终文件**。
+
+### 它们的关系
+通常情况下，一个 Chunk 会对应生成一个 Bundle。但在某些特殊配置下（如开启了 SourceMap），一个 Chunk 可能会生成多个 Bundle（一个 `.js` 文件和一个 `.map` 文件）。
+
+### 形象类比：做面包
+1. **Module**：原材料（面粉、水、酵母、糖）。
+2. **Chunk**：半成品（揉好的面团、调好的馅料）。Webpack 把相关的原材料组合在一起，形成了几个不同的“面团”。
+3. **Bundle**：最终产物（烤好的面包）。面团经过烤箱（Webpack 的输出处理）后，变成了你可以直接食用的面包。
+
+### 为什么需要区分？
+理解这个区别有助于你配置 Webpack 的高级功能：
+- **Entry**：产生 Initial Chunk。
+- **import()**：产生 Async Chunk。
+- **SplitChunks**：将公共模块提取到单独的 Chunk 中，以减少重复打包。
+
+## 9. 解决通过entry实现代码分割导致重复模块打包到各个bundle中问题
+ 修改webpack.config.js文件  配置dependOn
+```json
+ entry: {
+    index: {
+      import: './src/index.js',
+      dependOn: 'shared'
+    },
+    print: {
+        import: './src/print.js',
+        dependOn: 'shared'
+    },
+    shared: 'lodash'
+  },
+  ```
+  dependOn: 'shared' 表示该模块依赖于 shared（名为shared的chunk） 模块
+  shared: 'lodash' 表示该模块依赖于 lodash 模块
+  这里需要注意的是，shared 模块必须被包含在 entry 配置中，否则无法实现代码分割。
+  shared名称可以自定义，不过需要保证dependOn的值与shared名称一致。但是shared的值"lodash"不能自定义（因为webpack回去node_modules中找）
+
+  以下几种情况可以自定义"lodash"值：
+  1.通过别名
+  ```js
+    resolve: {
+      alias: {
+        'my_lodash': 'lodash'
+      }
+    }
+  ```
+  2.引用本地文件
+  ```json
+   shared: './src/common-utils.js'
+  ```
+  3.通过数组形式把多个第三方库打包到同一个bundle中
+  ```json
+   shared: ['lodash', 'axios','jquery']
+  ```
+
